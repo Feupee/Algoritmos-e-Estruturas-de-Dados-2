@@ -191,7 +191,7 @@ void GrafoTransposto(TipoGrafo *Grafo, TipoGrafo *GrafoT) {
     }
 }
 
-int main(int argc, char *argv[]) {
+int main() {
     /*-- Programa principal --*/
 
     TipoGrafo Grafo, GrafoT;
