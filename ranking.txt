@@ -1,0 +1,3 @@
+carlos 6 10 300
+lucas 4 12 130
+josue 3 12 120
