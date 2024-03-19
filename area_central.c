@@ -6,6 +6,83 @@
 
 // Definições de estruturas e funções...
 
+void imprimirLabirinto(TipoGrafo *Grafo) {
+    printf("Labirinto:\n");
+
+    // Imprime as paredes superiores do labirinto
+    for (int i = 0; i < Grafo->NumVertices; i++) {
+        printf("+--");
+    }
+    printf("+\n");
+
+    // Imprime o corpo do labirinto
+    for (int i = 0; i < Grafo->NumVertices; i++) {
+        TipoApontador Aux = PrimeiroListaAdj(&i, Grafo);
+        while (Aux != NULL) {
+            printf("|  ");
+            Aux = Aux->Prox;
+        }
+        printf("|\n");
+
+        // Imprime as paredes laterais direitas do labirinto
+        if (i < Grafo->NumVertices - 1) {
+            printf("+");
+            Aux = PrimeiroListaAdj(&i, Grafo);
+            while (Aux != NULL) {
+                printf("%d",Aux->Item.Vertice);
+                Aux = Aux->Prox;
+            }
+            printf("+\n");
+        }
+    }
+
+    // Imprime a parede inferior do labirinto
+    for (int i = 0; i < Grafo->NumVertices; i++) {
+        printf("+--");
+    }
+    printf("+\n");
+}
+
+int main() {
+    TipoGrafo Grafo;
+    FILE *arquivo;
+    char nome_arquivo[] = "Grafo da Area Central.txt";
+    int NVertices, NArestas;
+
+    // Abre o arquivo para leitura
+    arquivo = fopen(nome_arquivo, "r");
+    if (arquivo == NULL) {
+        fprintf(stderr, "Erro ao abrir o arquivo para leitura.\n");
+        return 1;
+    }
+
+    // Lê o número de vértices e arestas do arquivo
+    fscanf(arquivo, "%d", &NVertices);
+    fscanf(arquivo, "%d", &NArestas);
+
+    // Inicializa o grafo
+    Grafo.NumVertices = NVertices;
+    Grafo.NumArestas = NArestas;
+    FGVazio(&Grafo);
+
+    // Lê as arestas do arquivo e insere no grafo
+    for (int i = 0; i < NArestas; i++) {
+        int V1, V2, Peso;
+        fscanf(arquivo, "%d %d %d", &V1, &V2, &Peso);
+        InsereAresta(&V1, &V2, &Peso, &Grafo);
+    }
+
+    fclose(arquivo);
+
+    // Imprime o labirinto correspondente ao grafo lido
+    imprimirLabirinto(&Grafo);
+
+    return 0;
+}
+
+
+
+/*
 int main()
 {
     srand(time(NULL)); // Inicializa o gerador de números aleatórios com o tempo atual
@@ -64,3 +141,4 @@ int main()
 
     return 0;
 }
+*/
