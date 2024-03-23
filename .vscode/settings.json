@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "lista_de_adjascencia_sem_peso.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "stdio.h": "c",
+        "string.h": "c"
     }
 }

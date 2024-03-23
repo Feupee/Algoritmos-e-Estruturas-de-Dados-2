@@ -1,6 +1,6 @@
+
 #ifndef TAD_H
 #define TAD_H
-
 #define MAXNUMVERTICES  100
 #define MAXNUMARESTAS   4500
 #define FALSE           0

@@ -15,14 +15,29 @@ typedef struct TipoItem {
     TipoValorVertice Vertice;
 } TipoItem;
 
+
 // Definição de um ponteiro para a célula na lista de adjacências
-typedef struct TipoCelula *TipoApontador;
 
 // Definição da estrutura de uma célula na lista de adjacências
+
+// PARTE ------------------------------------------
+/*
+typedef struct TipoCelula *TipoApontador;
 struct TipoCelula {
     TipoItem Item;
     TipoApontador Prox;
 };
+*/
+
+typedef struct TipoCelula {
+    TipoItem Item;
+    struct TipoCelula *Prox;
+} TipoCelula;
+
+typedef TipoCelula *TipoApontador;
+
+
+
 
 // Definição da estrutura de uma lista de adjacências
 typedef struct TipoLista {
@@ -30,12 +45,12 @@ typedef struct TipoLista {
 } TipoLista;
 
 // Definição da estrutura de um grafo
-typedef struct TipoGrafo {
-    TipoLista Adj[MAXNUMVERTICES];
+typedef struct TipoArea {
     int NumVertices;
     int NumArestas;
+    TipoLista Adj[MAXNUMVERTICES];
     char Dificuldade[15];
-} TipoGrafo;
+} TipoArea;
 
 // Variáveis globais
 TipoApontador Aux; // Apontador auxiliar para iteração na lista de adjacências
@@ -48,15 +63,16 @@ TipoValorVertice NVertices; // Número de vértices
 void FLVazia(TipoLista *Lista);
 short Vazia(TipoLista Lista);
 void Insere(TipoItem *x, TipoLista *Lista);
-void FGVazio(TipoGrafo *Grafo);
-void InsereAresta(TipoValorVertice *V1, TipoValorVertice *V2, TipoGrafo *Grafo);
-short ExisteAresta(TipoValorVertice Vertice1, TipoValorVertice Vertice2, TipoGrafo *Grafo);
-short ListaAdjVazia(TipoValorVertice *Vertice, TipoGrafo *Grafo);
-TipoApontador PrimeiroListaAdj(TipoValorVertice *Vertice, TipoGrafo *Grafo);
-void ProxAdj(TipoValorVertice *Vertice, TipoGrafo *Grafo, TipoValorVertice *Adj, TipoApontador *Prox, short *FimListaAdj);
+void FGVazio(TipoArea *Grafo);
+void InsereAresta(TipoValorVertice *V1, TipoValorVertice *V2, TipoArea *Grafo);
+short ExisteAresta(TipoValorVertice Vertice1, TipoValorVertice Vertice2, TipoArea *Grafo);
+short ListaAdjVazia(TipoValorVertice *Vertice, TipoArea *Grafo);
+TipoApontador PrimeiroListaAdj(TipoValorVertice *Vertice, TipoArea *Grafo);
+void ProxAdj(TipoValorVertice *Vertice, TipoArea *Grafo, TipoValorVertice *Adj, TipoApontador *Prox, short *FimListaAdj);
 void Retira(TipoApontador p, TipoLista *Lista, TipoItem *Item);
-void RetiraAresta(TipoValorVertice *V1, TipoValorVertice *V2, TipoGrafo *Grafo);
-void LiberaGrafo(TipoGrafo *Grafo);
-void ImprimeGrafo(TipoGrafo *Grafo);
+void RetiraAresta(TipoValorVertice *V1, TipoValorVertice *V2, TipoArea *Grafo);
+void LiberaGrafo(TipoArea *Grafo);
+void ImprimeGrafo(TipoArea *Grafo);
 void ImprimeLista(TipoLista Lista);
-void GrafoTransposto(TipoGrafo *Grafo, TipoGrafo *GrafoT);
+void GrafoTransposto(TipoArea *Grafo, TipoArea *GrafoT);
+void encerraPrograma();

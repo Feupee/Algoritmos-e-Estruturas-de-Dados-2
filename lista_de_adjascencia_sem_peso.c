@@ -1,33 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define MAXNUMVERTICES  100
-#define MAXNUMARESTAS   4500
-#define FALSE           0
-#define TRUE            1
+#include <windows.h>
+#include "lista_de_adjascencia_sem_peso.h"
 
-typedef int TipoValorVertice;
-typedef struct TipoItem {
-    TipoValorVertice Vertice;
-} TipoItem;
-typedef struct TipoCelula *TipoApontador;
-struct TipoCelula {
-    TipoItem Item;
-    TipoApontador Prox;
-} TipoCelula;
-typedef struct TipoLista {
-    TipoApontador Primeiro, Ultimo;
-} TipoLista;
-typedef struct TipoGrafo {
-    TipoLista Adj[MAXNUMVERTICES];
-    int NumVertices;
-    int NumArestas;
-} TipoGrafo;
-
-TipoApontador Aux;
-long i;
-short FimListaAdj;
-int  NArestas;
-TipoValorVertice NVertices;
 
 /*--Entram aqui os operadores do Programa 2.4--*/
 void FLVazia(TipoLista *Lista) {
@@ -49,19 +24,19 @@ void Insere(TipoItem *x, TipoLista *Lista) {
 }
 
 /*-- Fim operadores do Programa 2.4 --*/
-void FGVazio(TipoGrafo *Grafo) {
+void FGVazio(TipoArea *Grafo) {
     long i;
     for (i = 0; i < Grafo->NumVertices; i++)
         FLVazia(&Grafo->Adj[i]);
 }
 
-void InsereAresta(TipoValorVertice *V1, TipoValorVertice *V2, TipoGrafo *Grafo) {
+void InsereAresta(TipoValorVertice *V1, TipoValorVertice *V2, TipoArea *Grafo) {
     TipoItem x;
     x.Vertice = *V2;
     Insere(&x, &Grafo->Adj[*V1]);
 }
 
-short ExisteAresta(TipoValorVertice Vertice1, TipoValorVertice Vertice2, TipoGrafo *Grafo) {
+short ExisteAresta(TipoValorVertice Vertice1, TipoValorVertice Vertice2, TipoArea *Grafo) {
     TipoApontador Aux;
     short EncontrouAresta = FALSE;
     Aux = Grafo->Adj[Vertice1].Primeiro->Prox;
@@ -73,15 +48,15 @@ short ExisteAresta(TipoValorVertice Vertice1, TipoValorVertice Vertice2, TipoGra
 }
 
 /* Operadores para obter a lista de adjacentes */
-short ListaAdjVazia(TipoValorVertice *Vertice, TipoGrafo *Grafo) {
+short ListaAdjVazia(TipoValorVertice *Vertice, TipoArea *Grafo) {
     return (Grafo->Adj[*Vertice].Primeiro == Grafo->Adj[*Vertice].Ultimo);
 }
 
-TipoApontador PrimeiroListaAdj(TipoValorVertice *Vertice, TipoGrafo *Grafo) {
+TipoApontador PrimeiroListaAdj(TipoValorVertice *Vertice, TipoArea *Grafo) {
     return (Grafo->Adj[*Vertice].Primeiro->Prox);
 }
 
-void ProxAdj(TipoValorVertice *Vertice, TipoGrafo *Grafo,
+void ProxAdj(TipoValorVertice *Vertice, TipoArea *Grafo,
              TipoValorVertice *Adj, TipoApontador *Prox, short *FimListaAdj) {
     /* Retorna Adj e Peso do Item apontado por Prox */
     *Adj = (*Prox)->Item.Vertice;
@@ -105,7 +80,7 @@ void Retira(TipoApontador p, TipoLista *Lista, TipoItem *Item) {
     free(q);
 }
 
-void RetiraAresta(TipoValorVertice *V1, TipoValorVertice *V2, TipoGrafo *Grafo) {
+void RetiraAresta(TipoValorVertice *V1, TipoValorVertice *V2, TipoArea *Grafo) {
     TipoApontador AuxAnterior, Aux;
     short EncontrouAresta = FALSE;
     TipoItem x;
@@ -122,7 +97,7 @@ void RetiraAresta(TipoValorVertice *V1, TipoValorVertice *V2, TipoGrafo *Grafo) 
     }
 }
 
-void LiberaGrafo(TipoGrafo *Grafo) {
+void LiberaGrafo(TipoArea *Grafo) {
     TipoApontador AuxAnterior, Aux;
     for (i = 0; i < Grafo->NumVertices; i++) {
         Aux = Grafo->Adj[i].Primeiro->Prox;
@@ -137,7 +112,7 @@ void LiberaGrafo(TipoGrafo *Grafo) {
     Grafo->NumVertices = 0;
 }
 
-void ImprimeGrafo(TipoGrafo *Grafo) {
+void ImprimeGrafo(TipoArea *Grafo) {
     int i;
     TipoApontador Aux;
     for (i = 0; i < Grafo->NumVertices; i++) {
@@ -162,7 +137,7 @@ void ImprimeLista(TipoLista Lista) {
     }
 }
 
-void GrafoTransposto(TipoGrafo *Grafo, TipoGrafo *GrafoT) {
+void GrafoTransposto(TipoArea *Grafo, TipoArea *GrafoT) {
     TipoValorVertice v, Adj;
     TipoApontador Aux;
     GrafoT->NumVertices = Grafo->NumVertices;
@@ -178,4 +153,16 @@ void GrafoTransposto(TipoGrafo *Grafo, TipoGrafo *GrafoT) {
             }
         }
     }
+}
+
+void encerraPrograma(){
+        system("cls");
+        printf("Voce pediu para sair, fechando programa.");
+
+        for(int a=0;a<5;a++){
+            printf(".");
+            Sleep(1000);
+        }
+        printf("!\n\n");
+		exit(0);
 }
