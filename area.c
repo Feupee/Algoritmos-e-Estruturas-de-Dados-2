@@ -60,7 +60,7 @@ int main() {
     TipoValorVertice V1, V2;
     int NVertices, NArestas; // Definindo NVertices e NArestas aqui
     // Leitura dos 5 grafos a partir dos arquivos
-    char file_name[15] = "Area 1 Facil.txt"; // Ajuste o tamanho conforme necessário .Função para armazenar o nome do arquivo .txt no buffer
+    char file_name[25] = "Area 1 Facil.txt"; // Ajuste o tamanho conforme necessário .Função para armazenar o nome do arquivo .txt no buffer
     FILE *file = fopen(file_name, "r");
     if (file == NULL) {
         printf("Erro ao abrir o arquivo %s\n", file_name);
@@ -72,15 +72,19 @@ int main() {
         // Inicialização da Area
         // Leitura do número de vértices e arestas
         fscanf(file, "%d %d", &NVertices, &NArestas); // Correção: definindo NVertices e NArestas
+        printf("[%d]- [%d]\n",NVertices,NArestas );
         Grafo.NumVertices = NVertices;
         Grafo.NumArestas = 0;
-        FGVazio(&Grafo);
         // Leitura das arestas
         for (int j = 0; j < NArestas; j++) {
             fscanf(file, "%d %d", &V1, &V2);
+            printf("1- [%d]- [%d]\n",V1,V2 );
             Grafo.NumArestas++;
-            InsereAresta(&V1, &V2, &Grafo);
+            printf("2-[%d] [%d] \n", Grafo.NumArestas, Grafo.NumVertices);
+            InsereAresta(V1, V2, &Grafo);
+            
         }
+        printf("caiu aqui5\n");
 
         // Impressão do grafo
         ImprimeGrafo(&Grafo);
