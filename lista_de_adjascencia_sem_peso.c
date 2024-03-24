@@ -1,8 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
-#include "lista_de_adjascencia_sem_peso.h"
+#define MAXNUMVERTICES  100
+#define MAXNUMARESTAS   4500
+#define FALSE           0
+#define TRUE            1
 
+typedef int TipoValorVertice;
+typedef struct TipoItem {
+    TipoValorVertice Vertice;
+} TipoItem;
+typedef struct TipoCelula *TipoApontador;
+struct TipoCelula {
+    TipoItem Item;
+    TipoApontador Prox;
+} TipoCelula;
+typedef struct TipoLista {
+    TipoApontador Primeiro, Ultimo;
+} TipoLista;
+typedef struct TipoGrafo {
+    TipoLista Adj[MAXNUMVERTICES];
+    int NumVertices;
+    int NumArestas;
+} TipoGrafo;
+
+TipoApontador Aux;
+long i;
+short FimListaAdj;
+int  NArestas;
+TipoValorVertice NVertices;
 
 /*--Entram aqui os operadores do Programa 2.4--*/
 void FLVazia(TipoLista *Lista) {
@@ -15,83 +40,28 @@ short Vazia(TipoLista Lista) {
     return (Lista.Primeiro == Lista.Ultimo);
 }
 
-void FGVazio(TipoArea *Grafo) {
-    long i;
-    for (i = 0; i < Grafo->NumVertices; i++)
-        FLVazia(&Grafo->Adj[i]);
-}
-
-/*
 void Insere(TipoItem *x, TipoLista *Lista) {
-    // Insere depois do ultimo item da lista
+    /*-- Insere depois do ultimo item da lista --*/
     Lista->Ultimo->Prox = (TipoApontador)malloc(sizeof(TipoCelula));
     Lista->Ultimo = Lista->Ultimo->Prox;
     Lista->Ultimo->Item = *x;
     Lista->Ultimo->Prox = NULL;
 }
 
-void InsereAresta(TipoValorVertice *V1, TipoValorVertice *V2, TipoArea *Grafo) {
+/*-- Fim operadores do Programa 2.4 --*/
+void FGVazio(TipoGrafo *Grafo) {
+    long i;
+    for (i = 0; i < Grafo->NumVertices; i++)
+        FLVazia(&Grafo->Adj[i]);
+}
+
+void InsereAresta(TipoValorVertice *V1, TipoValorVertice *V2, TipoGrafo *Grafo) {
     TipoItem x;
     x.Vertice = *V2;
     Insere(&x, &Grafo->Adj[*V1]);
 }
-*/
-void InsereAresta(TipoValorVertice V1, TipoValorVertice V2, TipoArea *Grafo) {
-    Insere(V2, &Grafo->Adj[V1]);
-}
 
-// Correção da função Insere para aceitar TipoVertice diretamente
-void Insere(TipoVertice x, TipoLista *Lista) {
-    TipoApontador novoNo = (TipoApontador)malloc(sizeof(TipoCelula));
-    if (novoNo == NULL) {
-        printf("Erro: Falha na alocação de memória.\n");
-        return;
-    }
-    novoNo->Item = x;
-    novoNo->Prox = NULL;
-
-    if (Vazia(*Lista)) {
-        Lista->Primeiro->Prox = novoNo;
-        Lista->Ultimo = novoNo;
-    } else {
-        Lista->Ultimo->Prox = novoNo;
-        Lista->Ultimo = novoNo;
-    }
-}
-
-
-/*
-void Insere(TipoItem *x, TipoLista *Lista) {
-    TipoApontador novoNo = (TipoApontador)malloc(sizeof(TipoCelula));
-    if (novoNo == NULL) {
-        printf("Erro: Falha na alocação de memória.\n");
-        return;
-    }
-    novoNo->Item = *x;
-    novoNo->Prox = NULL;
-
-    if (Vazia(*Lista)) {
-        Lista->Primeiro->Prox = novoNo;
-        Lista->Ultimo = novoNo;
-    } else {
-        Lista->Ultimo->Prox = novoNo;
-        Lista->Ultimo = novoNo;
-    }
-}
-
-void InsereAresta(TipoValorVertice V1, TipoValorVertice V2, TipoArea *Grafo) {
-    TipoItem x;
-    x.Vertice = V2;
-
-    // Inicializa a lista antes de inserir o elemento
-    FLVazia(&Grafo->Adj[V1]);
-
-    // Insere o vértice na lista de adjacência do vértice V1
-    Insere(&x, &Grafo->Adj[V1]);
-}
-*/
-
-short ExisteAresta(TipoValorVertice Vertice1, TipoValorVertice Vertice2, TipoArea *Grafo) {
+short ExisteAresta(TipoValorVertice Vertice1, TipoValorVertice Vertice2, TipoGrafo *Grafo) {
     TipoApontador Aux;
     short EncontrouAresta = FALSE;
     Aux = Grafo->Adj[Vertice1].Primeiro->Prox;
@@ -103,15 +73,15 @@ short ExisteAresta(TipoValorVertice Vertice1, TipoValorVertice Vertice2, TipoAre
 }
 
 /* Operadores para obter a lista de adjacentes */
-short ListaAdjVazia(TipoValorVertice *Vertice, TipoArea *Grafo) {
+short ListaAdjVazia(TipoValorVertice *Vertice, TipoGrafo *Grafo) {
     return (Grafo->Adj[*Vertice].Primeiro == Grafo->Adj[*Vertice].Ultimo);
 }
 
-TipoApontador PrimeiroListaAdj(TipoValorVertice *Vertice, TipoArea *Grafo) {
+TipoApontador PrimeiroListaAdj(TipoValorVertice *Vertice, TipoGrafo *Grafo) {
     return (Grafo->Adj[*Vertice].Primeiro->Prox);
 }
 
-void ProxAdj(TipoValorVertice *Vertice, TipoArea *Grafo,
+void ProxAdj(TipoValorVertice *Vertice, TipoGrafo *Grafo,
              TipoValorVertice *Adj, TipoApontador *Prox, short *FimListaAdj) {
     /* Retorna Adj e Peso do Item apontado por Prox */
     *Adj = (*Prox)->Item.Vertice;
@@ -135,7 +105,7 @@ void Retira(TipoApontador p, TipoLista *Lista, TipoItem *Item) {
     free(q);
 }
 
-void RetiraAresta(TipoValorVertice *V1, TipoValorVertice *V2, TipoArea *Grafo) {
+void RetiraAresta(TipoValorVertice *V1, TipoValorVertice *V2, TipoGrafo *Grafo) {
     TipoApontador AuxAnterior, Aux;
     short EncontrouAresta = FALSE;
     TipoItem x;
@@ -152,7 +122,7 @@ void RetiraAresta(TipoValorVertice *V1, TipoValorVertice *V2, TipoArea *Grafo) {
     }
 }
 
-void LiberaGrafo(TipoArea *Grafo) {
+void LiberaGrafo(TipoGrafo *Grafo) {
     TipoApontador AuxAnterior, Aux;
     for (i = 0; i < Grafo->NumVertices; i++) {
         Aux = Grafo->Adj[i].Primeiro->Prox;
@@ -167,7 +137,7 @@ void LiberaGrafo(TipoArea *Grafo) {
     Grafo->NumVertices = 0;
 }
 
-void ImprimeGrafo(TipoArea *Grafo) {
+void ImprimeGrafo(TipoGrafo *Grafo) {
     int i;
     TipoApontador Aux;
     for (i = 0; i < Grafo->NumVertices; i++) {
@@ -192,7 +162,7 @@ void ImprimeLista(TipoLista Lista) {
     }
 }
 
-void GrafoTransposto(TipoArea *Grafo, TipoArea *GrafoT) {
+void GrafoTransposto(TipoGrafo *Grafo, TipoGrafo *GrafoT) {
     TipoValorVertice v, Adj;
     TipoApontador Aux;
     GrafoT->NumVertices = Grafo->NumVertices;
@@ -208,16 +178,4 @@ void GrafoTransposto(TipoArea *Grafo, TipoArea *GrafoT) {
             }
         }
     }
-}
-
-void encerraPrograma(){
-        system("cls");
-        printf("Voce pediu para sair, fechando programa.");
-
-        for(int a=0;a<5;a++){
-            printf(".");
-            Sleep(1000);
-        }
-        printf("!\n\n");
-		exit(0);
 }

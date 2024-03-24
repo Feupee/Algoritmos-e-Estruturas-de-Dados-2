@@ -3,10 +3,7 @@
 #include <string.h>
 #include "lista_de_adjascencia_sem_peso.h"
 
-
-// Definições de estruturas e funções...
-
-void percurso(TipoValorVertice verticeA, TipoArea*Grafo){
+void percurso(TipoValorVertice verticeA, TipoGrafo*Grafo){
     ImprimeLista(Grafo->Adj[verticeA]); // Imprime seus adjascentes
     int escolha, i=0;
     printf("Escolha o vertice por indice: 1,2,3...\n");
@@ -52,59 +49,15 @@ void percurso(TipoValorVertice verticeA, TipoArea*Grafo){
 
 }
 
-
-
 int main() {
-    TipoArea Grafo;
-    strcpy(Grafo.Dificuldade, "Facil"); //Excluir, isso é somente um exemplo
-    TipoValorVertice V1, V2;
-    int NVertices, NArestas; // Definindo NVertices e NArestas aqui
-    // Leitura dos 5 grafos a partir dos arquivos
-    char file_name[25] = "Area 1 Facil.txt"; // Ajuste o tamanho conforme necessário .Função para armazenar o nome do arquivo .txt no buffer
-    FILE *file = fopen(file_name, "r");
-    if (file == NULL) {
-        printf("Erro ao abrir o arquivo %s\n", file_name);
-        system("pause");
-        return 1;
-    }
-
-        printf("Carregando Area 1...\n");
-        // Inicialização da Area
-        // Leitura do número de vértices e arestas
-        fscanf(file, "%d %d", &NVertices, &NArestas); // Correção: definindo NVertices e NArestas
-        printf("[%d]- [%d]\n",NVertices,NArestas );
-        Grafo.NumVertices = NVertices;
-        Grafo.NumArestas = 0;
-        // Leitura das arestas
-        for (int j = 0; j < NArestas; j++) {
-            fscanf(file, "%d %d", &V1, &V2);
-            printf("1- [%d]- [%d]\n",V1,V2 );
-            Grafo.NumArestas++;
-            printf("2-[%d] [%d] \n", Grafo.NumArestas, Grafo.NumVertices);
-            InsereAresta(V1, V2, &Grafo);
-            
-        }
-        printf("caiu aqui5\n");
-
-        // Impressão do grafo
-        ImprimeGrafo(&Grafo);
-        
-        // Processamento adicional, se necessário
-
-        fclose(file);
-        system("pause");
-    return 0;
-}
-
-/*int main() {
-    TipoArea Grafo;
+    TipoGrafo Grafo;
     strcpy(Grafo.Dificuldade, "Facil"); //Excluir, isso é somente um exemplo
     TipoValorVertice V1, V2;
     int NVertices, NArestas; // Definindo NVertices e NArestas aqui
     // Leitura dos 5 grafos a partir dos arquivos
     for (int i = 1; i <= 5; i++) {
         char file_name[15]; // Ajuste o tamanho conforme necessário
-        sprintf(file_name, "Area %d %s.txt", i, Grafo.Dificuldade); //Função para armazenar o nome do arquivo .txt no buffer
+        sprintf(file_name, "Areas/Facil/Area %d %s.txt", i, Grafo.Dificuldade); //Função para armazenar o nome do arquivo .txt no buffer
         FILE *file = fopen(file_name, "r");
         if (file == NULL) {
             printf("Erro ao abrir o arquivo %s\n", file_name);
@@ -119,6 +72,7 @@ int main() {
         Grafo.NumVertices = NVertices;
         Grafo.NumArestas = 0;
         FGVazio(&Grafo);
+
         // Leitura das arestas
         for (int j = 0; j < NArestas; j++) {
             fscanf(file, "%d %d", &V1, &V2);
@@ -128,12 +82,10 @@ int main() {
 
         // Impressão do grafo
         ImprimeGrafo(&Grafo);
-        
-        // Processamento adicional, se necessário
 
         fclose(file);
     }
+
         system("pause");
     return 0;
-}*/
-
+}
