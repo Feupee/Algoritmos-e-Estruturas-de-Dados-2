@@ -3,47 +3,91 @@
 #include <string.h>
 #include <time.h>
 #include "lista_de_adjascencia.c"
+#include <windows.h>
 
 // Definições de estruturas e funções...
 
-void imprimirLabirinto(TipoGrafo *Grafo) {
-    printf("Labirinto:\n");
+int pontuacao, vitorias, derrotas; //    Ajustar para JOGADOR
 
-    // Imprime as paredes superiores do labirinto
-    for (int i = 0; i < Grafo->NumVertices; i++) {
-        printf("+--");
+void percurso(TipoValorVertice verticeA, TipoGrafo *Grafo)
+{
+    if (verticeA == Grafo->NumVertices - 1)
+    {
+        /*
+            VENCE (chegou no N-ésimo Vértice)
+            Incrementar VITORIAS em 3
+        */
+        vitorias += 3;
+        return;
     }
-    printf("+\n");
 
-    // Imprime o corpo do labirinto
-    for (int i = 0; i < Grafo->NumVertices; i++) {
-        TipoApontador Aux = PrimeiroListaAdj(&i, Grafo);
-        while (Aux != NULL) {
-            printf("|  ");
-            Aux = Aux->Prox;
+    printf("=== SALA ATUAL: [%d]       PONTUACAO ATUAL: [%d] ===\n\n", verticeA, pontuacao);
+    int escolha;
+    TipoApontador Aux = PrimeiroListaAdj(&verticeA, Grafo);
+
+    // --------- Verificando GAMEOVER, (nao tem pontos para andar)---------
+    int ver = 1;
+    while (Aux != NULL)
+    {
+        if (pontuacao + Aux->Item.Peso >= 0)
+        {
+            ver = 0;
         }
-        printf("|\n");
+        Aux = Aux->Prox;
+    }
+    if (ver == 1)
+    {
+        printf("\n<< GAMEOVER >>   << VOCE NAO TEM PONTOS PARA CAMINHAR!! >>\n");
+        derrotas++;
+        return;
+    }
 
-        // Imprime as paredes laterais direitas do labirinto
-        if (i < Grafo->NumVertices - 1) {
-            printf("+");
-            Aux = PrimeiroListaAdj(&i, Grafo);
-            while (Aux != NULL) {
-                printf("%d",Aux->Item.Vertice);
+    while (1)
+    { // Para ver se ELE PODE IR PARA TAL VERTICE
+
+        Aux = PrimeiroListaAdj(&verticeA, Grafo);
+        while (1)
+        {
+            Aux = PrimeiroListaAdj(&verticeA, Grafo);
+            printf("\nEscolha a SALA...\n");
+            ImprimeLista(Grafo->Adj[verticeA]); // Imprime seus adjascentes
+
+            scanf("%d", &escolha);
+            
+            while (Aux->Prox != NULL)
+            {
+                if (Aux->Item.Vertice == escolha)
+                    break;
                 Aux = Aux->Prox;
             }
-            printf("+\n");
+            if (Aux->Item.Vertice == escolha)
+            {
+                // Achou o vertice
+                break;
+            }
+            else
+            {
+                printf(" -- Voce nao pode VISITAR esta SALA! -- \n\n");
+            }
+        }
+
+        // Chama o percurso a partir daquele vertice.
+        if (pontuacao + Aux->Item.Peso >= 0)
+        {
+            break;
+        }
+        else
+        {
+            printf("PONTUACAO INSUFICIENTE!!\n");
         }
     }
 
-    // Imprime a parede inferior do labirinto
-    for (int i = 0; i < Grafo->NumVertices; i++) {
-        printf("+--");
-    }
-    printf("+\n");
+    pontuacao += Aux->Item.Peso; // Somando a pontuacao
+    percurso(Aux->Item.Vertice, Grafo);
 }
 
-int main() {
+int main()
+{
     TipoGrafo Grafo;
     FILE *arquivo;
     char nome_arquivo[] = "Grafo da Area Central.txt";
@@ -51,7 +95,8 @@ int main() {
 
     // Abre o arquivo para leitura
     arquivo = fopen(nome_arquivo, "r");
-    if (arquivo == NULL) {
+    if (arquivo == NULL)
+    {
         fprintf(stderr, "Erro ao abrir o arquivo para leitura.\n");
         return 1;
     }
@@ -66,7 +111,8 @@ int main() {
     FGVazio(&Grafo);
 
     // Lê as arestas do arquivo e insere no grafo
-    for (int i = 0; i < NArestas; i++) {
+    for (int i = 0; i < NArestas; i++)
+    {
         int V1, V2, Peso;
         fscanf(arquivo, "%d %d %d", &V1, &V2, &Peso);
         InsereAresta(&V1, &V2, &Peso, &Grafo);
@@ -74,13 +120,25 @@ int main() {
 
     fclose(arquivo);
 
-    // Imprime o labirinto correspondente ao grafo lido
-    imprimirLabirinto(&Grafo);
+
+    // ----- Inicializar a função de PERCURSO no LABIRINTO -----
+    vitorias = 0;
+    derrotas = 0;
+    while (1)
+    {
+        printf("\nDeseja jogar? se Nao pressione 0!\n");
+        int jogar = 1;
+        scanf("%d", &jogar);
+        if (jogar == 0)
+            break;
+        pontuacao = 0; // Jogador começa com 0 de pontos
+        printf("----- INICIO DO LABIRINTO -----\n\n");
+        percurso(0, &Grafo);
+        printf("\nBom JOGO! JOGADOR1!!\nPontuacao = [%d]\nVitorias = [%d]\nDerrotas = [%d]\n", pontuacao, vitorias,derrotas);
+    }
 
     return 0;
 }
-
-
 
 /*
 int main()

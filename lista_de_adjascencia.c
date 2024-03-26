@@ -144,7 +144,7 @@ void ImprimeLista(TipoLista Lista) {
     TipoApontador Aux;
     Aux = Lista.Primeiro->Prox;
     while (Aux != NULL) {
-        printf("%3d (%12d)", Aux->Item.Vertice, Aux->Item.Peso);
+        printf("SALA: [%d] ---- VALOR: (%d)\n", Aux->Item.Vertice, Aux->Item.Peso);
         Aux = Aux->Prox;
     }
 }
