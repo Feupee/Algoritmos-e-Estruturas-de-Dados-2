@@ -2,34 +2,77 @@
 #include <stdlib.h>
 #include <string.h>
 #include "abb.h"
+#include "lista_de_adjascencia.c"
 
-void Inicializa(Apontador *Dicionario) { *Dicionario = NULL; }
+void Inicializa_binaria(Apontador *Dicionario) { *Dicionario = NULL; }
 
-int Vazio(Apontador *Dicionario) { return (Dicionario == NULL); }
+int Vazio_binaria(Apontador *Dicionario) { return (Dicionario == NULL); }
 
-void PosFixado(Apontador *p) {
+void PosFixado_binaria(Apontador *p) {
   if (*p == NULL)
     return;
-  PosFixado(&(*p)->Esq);
-  PosFixado(&(*p)->Dir);
-  printf("%s\n", (*p)->Reg.Chave.cep);
+  PosFixado_binaria(&(*p)->Esq);
+  PosFixado_binaria(&(*p)->Dir);
+
+  //OPERACAO, (VISITA):
+    TipoGrafo *aux;
+    *aux = (*p)->Reg.Chave.grafo;
+    percursoCentral(0,aux);
+
 }
 
-void Central(Apontador *p) {
-  if (*p == NULL)
+void Insere_binaria(Registro x, Apontador *p) {
+  if (*p == NULL) {
+    *p = (Apontador)malloc(sizeof(No));
+    (*p)->Reg = x;
+    (*p)->Esq = NULL;
+    (*p)->Dir = NULL;
     return;
-  Central(&(*p)->Esq);
-  printf("%s\n", (*p)->Reg.Chave.cep);
-  Central(&(*p)->Dir);
+  }
+
+  if (strcmp(x.Chave.grafo.NumVertices, (*p)->Reg.Chave.grafo.NumVertices) < 0) {
+    Insere_binaria(x, &(*p)->Esq);
+    return;
+  }
+  if (strcmp(x.Chave.grafo.NumVertices, (*p)->Reg.Chave.grafo.NumVertices) > 0)
+    Insere_binaria(x, &(*p)->Dir);
 }
 
-void PreFixado(Apontador *p) {
-  if (*p == NULL)
+void Antecessor_binaria(Apontador q, Apontador *r) {
+  if ((*r)->Dir != NULL) {
+    Antecessor_binaria(q, &(*r)->Dir);
     return;
-  printf("%s\n", (*p)->Reg.Chave.cep);
-  PreFixado(&(*p)->Esq);
-  PreFixado(&(*p)->Dir);
+  }
+  q->Reg = (*r)->Reg;
+  q = *r;
+  *r = (*r)->Esq;
+  free(q);
 }
+
+void Retira_binaria(Registro x, Apontador *p) {
+  Apontador Aux;
+  if (*p == NULL) {
+    printf("Erro: Registro nao esta na arvore \n");
+    return;
+  }
+  if (strcmp(x.Chave.grafo.NumVertices, (*p)->Reg.Chave.grafo.NumVertices) < 0) {
+    Retira_binaria(x, &(*p)->Esq);
+    return;
+  }
+  if (strcmp(x.Chave.grafo.NumVertices, (*p)->Reg.Chave.grafo.NumVertices) > 0) {
+    Retira_binaria(x, &(*p)->Dir);
+    return;
+  }
+  if ((*p)->Esq != NULL) {
+    Antecessor(*p, &(*p)->Esq);
+    return;
+  }
+  Aux = *p;
+  *p = (*p)->Dir;
+  free(Aux);
+}
+
+/*
 
 Registro *Pesquisa(char *x, Apontador *p) {
   if (*p == NULL)
@@ -43,56 +86,6 @@ Registro *Pesquisa(char *x, Apontador *p) {
 
   else
     return &(*p)->Reg;
-}
-
-void Insere(Registro x, Apontador *p) {
-  if (*p == NULL) {
-    *p = (Apontador)malloc(sizeof(No));
-    (*p)->Reg = x;
-    (*p)->Esq = NULL;
-    (*p)->Dir = NULL;
-    return;
-  }
-  if (strcmp(x.Chave.cep, (*p)->Reg.Chave.cep) < 0) {
-    Insere(x, &(*p)->Esq);
-    return;
-  }
-  if (strcmp(x.Chave.cep, (*p)->Reg.Chave.cep) > 0)
-    Insere(x, &(*p)->Dir);
-}
-
-void Antecessor(Apontador q, Apontador *r) {
-  if ((*r)->Dir != NULL) {
-    Antecessor(q, &(*r)->Dir);
-    return;
-  }
-  q->Reg = (*r)->Reg;
-  q = *r;
-  *r = (*r)->Esq;
-  free(q);
-}
-
-void Retira(Registro x, Apontador *p) {
-  Apontador Aux;
-  if (*p == NULL) {
-    printf("Erro: Registro nao esta na arvore \n");
-    return;
-  }
-  if (strcmp(x.Chave.cep, (*p)->Reg.Chave.cep) < 0) {
-    Retira(x, &(*p)->Esq);
-    return;
-  }
-  if (strcmp(x.Chave.cep, (*p)->Reg.Chave.cep) > 0) {
-    Retira(x, &(*p)->Dir);
-    return;
-  }
-  if ((*p)->Esq != NULL) {
-    Antecessor(*p, &(*p)->Esq);
-    return;
-  }
-  Aux = *p;
-  *p = (*p)->Dir;
-  free(Aux);
 }
 
 Registro *Menor(Apontador *p) {
@@ -121,3 +114,4 @@ int AlturaMax(Apontador *p) {
 
   return 1 + alturaE;
 }
+*/

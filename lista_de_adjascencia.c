@@ -167,3 +167,83 @@ void GrafoTransposto(TipoGrafo *Grafo, TipoGrafo *GrafoT) {
         }
     }
 }
+
+int pontuacao, vitorias, derrotas; //    Ajustar para JOGADOR
+
+void percursoCentral(TipoValorVertice verticeA, TipoGrafo *Grafo)
+{
+    if (verticeA == Grafo->NumVertices - 1)
+    {
+        /*
+            VENCE (chegou no N-ésimo Vértice)
+            Incrementar VITORIAS em 3
+        */
+        vitorias += 3;
+        return;
+    }
+
+    printf("=== SALA ATUAL: [%d]       PONTUACAO ATUAL: [%d] ===\n\n", verticeA, pontuacao);
+    int escolha;
+    TipoApontador Aux = PrimeiroListaAdj(&verticeA, Grafo);
+
+    // --------- Verificando GAMEOVER, (nao tem pontos para andar)---------
+    int ver = 1;
+    while (Aux != NULL)
+    {
+        if (pontuacao + Aux->Item.Peso >= 0)
+        {
+            ver = 0;
+        }
+        Aux = Aux->Prox;
+    }
+    if (ver == 1)
+    {
+        printf("\n<< GAMEOVER >>   << VOCE NAO TEM PONTOS PARA CAMINHAR!! >>\n");
+        derrotas++;
+        return;
+    }
+
+    while (1)
+    { // Para ver se ELE PODE IR PARA TAL VERTICE
+
+        Aux = PrimeiroListaAdj(&verticeA, Grafo);
+        while (1)
+        {
+            Aux = PrimeiroListaAdj(&verticeA, Grafo);
+            printf("\nEscolha a SALA...\n");
+            ImprimeLista(Grafo->Adj[verticeA]); // Imprime seus adjascentes
+
+            scanf("%d", &escolha);
+            
+            while (Aux->Prox != NULL)
+            {
+                if (Aux->Item.Vertice == escolha)
+                    break;
+                Aux = Aux->Prox;
+            }
+            if (Aux->Item.Vertice == escolha)
+            {
+                // Achou o vertice
+                break;
+            }
+            else
+            {
+                printf(" -- Voce nao pode VISITAR esta SALA! -- \n\n");
+            }
+        }
+
+        // Chama o percurso a partir daquele vertice.
+        if (pontuacao + Aux->Item.Peso >= 0)
+        {
+            break;
+        }
+        else
+        {
+            printf("PONTUACAO INSUFICIENTE!!\n");
+        }
+    }
+
+    pontuacao += Aux->Item.Peso; // Somando a pontuacao
+    percursoCentral(Aux->Item.Vertice, Grafo);
+}
+

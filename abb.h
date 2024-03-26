@@ -1,19 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "lista_de_adjascencia.h" // Inclua o arquivo que define as estruturas do grafo
 
 typedef struct info {
-  char cep[10];
-  char estado[3];
-  char cidade[50];
-  char rua[100];
+    TipoGrafo grafo;
 } Info;
 
 typedef Info TipoChave;
 typedef struct Registro {
   TipoChave Chave;
   /*outros componentes */
-
 } Registro;
 typedef struct No *Apontador;
 
@@ -23,26 +20,30 @@ typedef struct No {
 } No;
 typedef Apontador TipoDicionario;
 
-void Inicializa(Apontador *Dicionario);
+void Inicializa_binaria(Apontador *Dicionario);
 
-int Vazio(Apontador *Dicionario);
+int Vazio_binaria(Apontador *Dicionario);
 
-void PosFixado(Apontador *p);
+void PosFixado_binaria(Apontador *p);
 
+void Insere_binaria(Registro x, Apontador *p);
+
+void Antecessor_binaria(Apontador q, Apontador *r);
+
+void Retira_binaria(Registro x, Apontador *p);
+
+/*
 void Central(Apontador *p);
 
 void PreFixado(Apontador *p);
 
 Registro *Pesquisa(char *x, Apontador *p);
-
-void Insere(Registro x, Apontador *p);
-
-void Antecessor(Apontador q, Apontador *r);
-
-void Retira(Registro x, Apontador *p);
-
 Registro *Menor(Apontador *p);
 
 Registro *Maior(Apontador *p);
 
 int AlturaMax(Apontador *p);
+
+*/
+
+
