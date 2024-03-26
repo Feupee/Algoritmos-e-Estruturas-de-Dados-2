@@ -1,7 +1,7 @@
 # <div align= "center" >TAREFAS <div/>
 > [!TIP]
 > Coloque 'X' dentro do [ ] para marcar como feito
-- [X] AREA CENTRAL
+- [X] **ÁREA CENTRAL**
     - [X] Percurso
     - [X] ...
 - [ ] AREA PADRAO
