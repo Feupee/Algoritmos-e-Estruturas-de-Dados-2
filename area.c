@@ -3,52 +3,6 @@
 #include <string.h>
 #include "lista_de_adjascencia.h"
 
-void percurso(TipoValorVertice verticeA, TipoGrafo*Grafo){
-    ImprimeLista(Grafo->Adj[verticeA]); // Imprime seus adjascentes
-    int escolha, i=0;
-    printf("Escolha o vertice por indice: 1,2,3...\n");
-    scanf("%d ", &escolha);
-
-    TipoApontador Aux = PrimeiroListaAdj(&verticeA, Grafo);
-
-    if(Aux->Item.Vertice == -1){
-        // Se o vertice aponta pra -1, ele é o vertice de SAIDA. entao GANHOU
-        /*
-         Vertice 0:  3 (12523024)  2 (12523024)
-            Vertice 1:  3 (12523024)  4 (12523024)
-            Vertice 2: 
-            Vertice 3:  5 (12523024)
-            Vertice 4:  -1
-            Vertice -1: Indica que ganha apenas n faz nada. 
-        */
-    }
-
-    if(Aux == NULL){
-        int escolha_gameover;      //GAMEOVER  
-        printf("Gameover: 1-ENCERRAR, 2-JOGAR NOVAMENTE\n");
-        do{
-        scanf("%d",&escolha_gameover);
-        if(escolha_gameover == 1){
-            //system("cls");
-            printf("GAMEOVER");
-           // exit(0);
-        }
-        else{
-            percurso(0,Grafo); //Chama o percurso NOVAMENTE para vertice INICIAL
-        }
-        }while(escolha_gameover<0 && escolha_gameover>2);
-    }
-
-    while (Aux->Prox != NULL && i != escolha) {
-        printf("%3d", Aux->Item.Vertice);
-        Aux = Aux->Prox;
-        i++;
-    }
-    // Chama o percurso a partir daquele vertice.
-    percurso(Aux->Item.Vertice, Grafo);
-}
-
-
 
 int main() {
     TipoGrafo Grafo;

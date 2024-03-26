@@ -29,7 +29,7 @@ typedef struct TipoGrafo {
     TipoLista Adj[MAXNUMVERTICES];
     int NumVertices;
     int NumArestas;
-    char Dificuldade[20];
+    char Dificuldade[20]
 } TipoGrafo;
 
 void FLVazia(TipoLista *Lista);

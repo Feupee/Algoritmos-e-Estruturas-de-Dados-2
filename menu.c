@@ -26,6 +26,73 @@ typedef struct {
     char dificuldade[20];
 } Jogo_config;
 
+int jogadorExiste(char *nomeBusca) {
+    FILE *pont_arq;
+    char nome[MAX_NOME];
+    
+    // Abrindo o arquivo em modo leitura
+    pont_arq = fopen("ranking.txt", "r");
+    
+    // Verificando se o arquivo foi aberto corretamente
+    if (pont_arq == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 0;
+    }
+
+    // Lendo linha por linha e comparando o nome buscado
+    while (fgets(nome, MAX_NOME, pont_arq) != NULL) {
+        // Removendo o caractere de nova linha
+        nome[strlen(nome) - 1] = '\0';
+
+        // Comparando o nome buscado com o nome lido do arquivo
+        if (strcmp(nome, nomeBusca) == 0) {
+            // Fechando o arquivo e retornando verdadeiro se o nome foi encontrado
+            fclose(pont_arq);
+            return 1;
+        }
+    }
+
+    // Fechando o arquivo e retornando falso se o nome não foi encontrado
+    fclose(pont_arq);
+    return 0;
+}
+
+void como_jogar(){
+        printf("Como Jogar: Jogo de Labirinto\n");
+        printf("Objetivo do Jogo:\n");
+        printf("O objetivo do jogo e escapar do labirinto, avancando por diferentes areas ate chegar a Area Central. Cada avanco de fase aumenta a dificuldade, adicionando mais salas ao labirinto. O jogador deve encontrar o caminho correto para avancar sem cair em salas sem saida. Alem disso, e importante acumular pontos na Area Central para subir no ranking.\n\n");
+
+        printf("Instrucoes:\n");
+        printf("Escolha do Caminho:\n\n");
+
+        printf("Ao entrar em uma area, o jogador devera escolher para qual sala deseja se mover.\n");
+        printf("Cada sala pode levar a uma saida ou a uma sala sem saida.\n");
+        printf("Se o jogador entrar em uma sala sem saida, ele deve recomecar a partir da sala inicial daquela area.\n");
+        printf("Se encontrar a saida, avanca para outra area do mapa.\n\n");
+
+        printf("Area Central:\n\n");
+
+        printf("Diferente das outras salas, a Area Central contabiliza pontuacao para cada avanco e permite ao jogador retroceder uma sala sacrificando um ponto.\n");
+        printf("A derrota ocorre apenas se o jogador encontrar uma sala sem pontos acumulados para usar o retorno.\n\n");
+
+        printf("Dificuldade do Percurso:\n\n");
+
+        printf("A dificuldade e determinada pelo numero de salas na area inicial.\n");
+        printf("A cada avanco de fase, o numero de salas da proxima area aumenta em uma unidade em relacao a anterior.\n\n");
+
+        printf("Mapa do Labirinto:\n\n");
+
+        printf("Composto por caminhos que levam a Area Central.\n");
+        printf("Cada regiao do mapa determina um conjunto de areas, e o progresso para uma nova regiao e feito completando todas as areas da regiao anterior.\n");
+        printf("Todas as areas levam ao fim do labirinto, independentemente do caminho escolhido.\n\n");
+
+        printf("Sistema de Ranking:\n\n");
+
+        printf("Baseado no tempo de cada partida e na pontuacao feita na Area Central.\n");
+        printf("O tempo e contado a partir do inicio do percurso e termina ao completar o labirinto.\n");
+        printf("Armazena somente as ultimas 10 vitorias, organizando de forma crescente as informacoes do jogador (nome, tempo total, tempo gasto em cada area e pontuacao feita na Area Central).\n");
+}
+
 void adicionarVitoria(const char *nomeJogador) {
     FILE *pont_arq;
     Jogador jogador;
@@ -198,7 +265,7 @@ int main() {
         goto inicio;
             }
         }
-        
+
         break;
     case 2:
         system("cls");
@@ -209,12 +276,14 @@ int main() {
         break;
     case 3:
         system("cls");
+        como_jogar();
         do{
             if(kbhit){a=getch();}
         }while(a != 27);
         break;
     case 4:
         system("cls");
+        printf("Jogo Feito por Breno Oliveira Cavalcante - Felipe Santos Silva - Marcos Gabriel Moreira Fonseca");
         do{
             if(kbhit){a=getch();}
         }while(a != 27);

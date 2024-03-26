@@ -247,3 +247,67 @@ void percursoCentral(TipoValorVertice verticeA, TipoGrafo *Grafo)
     percursoCentral(Aux->Item.Vertice, Grafo);
 }
 
+void percurso(TipoValorVertice verticeA, TipoGrafo *Grafo)
+{
+    if (verticeA == Grafo->NumVertices - 1)
+    {
+        /*
+            VENCE (chegou no N-ésimo Vértice)
+            Incrementar VITORIAS em 3
+        */
+        vitorias += 3;
+        return;
+    }
+
+    printf("=== SALA ATUAL: [%d] ===\n\n", verticeA);
+    int escolha;
+    TipoApontador Aux = PrimeiroListaAdj(&verticeA, Grafo);
+
+    // --------- Verificando GAMEOVER, (chegou numa sala sem adjascentes)---------
+    if (Aux == NULL)
+    {
+        derrotas++;
+        do{
+        printf("\n<< GAMEOVER >>   << VOCE NAO TEM PONTOS PARA CAMINHAR!! >>\n");
+        printf("1-ENCERRAR, 2-JOGAR NOVAMENTE\n");
+        scanf("%d",&escolha_gameover);
+        if(escolha_gameover == 1){
+            //system("cls");
+            printf("GAMEOVER");
+           // exit(0);
+        }
+        else{
+            percurso(0,Grafo); //Chama o percurso NOVAMENTE para vertice INICIAL
+        }
+        }while(escolha_gameover<0 && escolha_gameover>2);
+    }
+
+    while (1)
+    { // Para ver se ELE PODE IR PARA TAL VERTICE
+            Aux = PrimeiroListaAdj(&verticeA, Grafo);
+            printf("\nEscolha a SALA...\n");
+            ImprimeLista(Grafo->Adj[verticeA]); // Imprime seus adjascentes
+
+            scanf("%d", &escolha);
+            
+            while (Aux->Prox != NULL)
+            {
+                if (Aux->Item.Vertice == escolha)
+                    break;
+                Aux = Aux->Prox;
+            }
+            if (Aux->Item.Vertice == escolha)
+            {
+                // Achou o vertice
+                break;
+            }
+            else
+            {
+                printf(" -- Voce nao pode VISITAR esta SALA! -- \n\n");
+            }
+        
+
+    }
+
+    percurso(Aux->Item.Vertice, Grafo);
+}

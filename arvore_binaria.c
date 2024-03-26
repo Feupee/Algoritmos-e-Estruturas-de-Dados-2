@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "abb.h"
+#include "arvore_binaria.h"
 #include "lista_de_adjascencia.c"
 
 void Inicializa_binaria(Apontador *Dicionario) { *Dicionario = NULL; }
@@ -17,8 +17,8 @@ void PosFixado_binaria(Apontador *p) {
   //OPERACAO, (VISITA):
     TipoGrafo *aux;
     *aux = (*p)->Reg.Chave.grafo;
-
-    percursoCentral(0,aux);
+    if(aux->Adj->Primeiro->Item.Peso == 0) percurso(0,aux);
+    else percursoCentral(0,aux);
 
 }
 
