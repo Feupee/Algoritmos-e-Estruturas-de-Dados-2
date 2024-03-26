@@ -26,4 +26,3 @@ Arvore binaria com todos os grafos
 Area central na raiz
 chama PosOrdem_binaria(), e a cada vitoria aumentar Vitoria++
 se for area central +=3
-

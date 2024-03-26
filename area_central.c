@@ -6,6 +6,7 @@
 #include <windows.h>
 
 
+
 int main()
 {
     TipoGrafo Grafo;
@@ -53,7 +54,7 @@ int main()
             break;
         pontuacao = 0; // Jogador começa com 0 de pontos
         printf("----- INICIO DO LABIRINTO -----\n\n");
-        percurso(0, &Grafo);
+        percursoCentral(0, &Grafo);
         printf("\nBom JOGO! JOGADOR1!!\nPontuacao = [%d]\nVitorias = [%d]\nDerrotas = [%d]\n", pontuacao, vitorias,derrotas);
     }
 

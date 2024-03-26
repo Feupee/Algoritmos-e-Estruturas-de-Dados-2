@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lista_de_adjascencia_sem_peso.h"
+#include "lista_de_adjascencia.h"
 
 void percurso(TipoValorVertice verticeA, TipoGrafo*Grafo){
     ImprimeLista(Grafo->Adj[verticeA]); // Imprime seus adjascentes
@@ -46,8 +46,9 @@ void percurso(TipoValorVertice verticeA, TipoGrafo*Grafo){
     }
     // Chama o percurso a partir daquele vertice.
     percurso(Aux->Item.Vertice, Grafo);
-
 }
+
+
 
 int main() {
     TipoGrafo Grafo;
@@ -77,7 +78,7 @@ int main() {
         for (int j = 0; j < NArestas; j++) {
             fscanf(file, "%d %d", &V1, &V2);
             Grafo.NumArestas++;
-            InsereAresta(&V1, &V2, &Grafo);
+            InsereAresta(&V1, &V2, 0, &Grafo);
         }
 
         // Impressão do grafo

@@ -22,6 +22,10 @@ typedef struct {
     int pontos;
 } Jogador;
 
+typedef struct {
+    char dificuldade[20];
+} Jogo_config;
+
 void adicionarVitoria(const char *nomeJogador) {
     FILE *pont_arq;
     Jogador jogador;

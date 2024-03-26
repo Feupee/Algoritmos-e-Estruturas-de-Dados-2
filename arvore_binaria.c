@@ -17,6 +17,7 @@ void PosFixado_binaria(Apontador *p) {
   //OPERACAO, (VISITA):
     TipoGrafo *aux;
     *aux = (*p)->Reg.Chave.grafo;
+
     percursoCentral(0,aux);
 
 }
@@ -30,11 +31,11 @@ void Insere_binaria(Registro x, Apontador *p) {
     return;
   }
 
-  if (strcmp(x.Chave.grafo.NumVertices, (*p)->Reg.Chave.grafo.NumVertices) < 0) {
+  if (x.Chave.grafo.NumVertices < (*p)->Reg.Chave.grafo.NumVertices) {
     Insere_binaria(x, &(*p)->Esq);
     return;
   }
-  if (strcmp(x.Chave.grafo.NumVertices, (*p)->Reg.Chave.grafo.NumVertices) > 0)
+  if (x.Chave.grafo.NumVertices > (*p)->Reg.Chave.grafo.NumVertices)
     Insere_binaria(x, &(*p)->Dir);
 }
 
