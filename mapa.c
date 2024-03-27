@@ -62,9 +62,15 @@ int main() {
     }
 
   FILE *arquivo = fopen("area", "r");
+  /*
+    --> 1010
+    --> 0101
+    -->
+  */
 
   while (fscanf(arquivo, "%[^;];%2[^;];%[^;];%[^\n]\n", grafos) != EOF) { // LER DO ARQUIVO O GRAFO
     aux.Chave.grafo = grafos;
+
     Insere_binaria(aux, &Dicionario);
   }
 

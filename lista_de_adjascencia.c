@@ -267,6 +267,7 @@ void percurso(TipoValorVertice verticeA, TipoGrafo *Grafo)
     if (Aux == NULL)
     {
         derrotas++;
+        int escolha_gameover;
         do{
         printf("\n<< GAMEOVER >>   << VOCE NAO TEM PONTOS PARA CAMINHAR!! >>\n");
         printf("1-ENCERRAR, 2-JOGAR NOVAMENTE\n");

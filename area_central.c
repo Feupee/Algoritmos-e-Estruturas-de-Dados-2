@@ -11,6 +11,8 @@ int main()
 {
     TipoGrafo Grafo;
     FILE *arquivo;
+
+    //
     char nome_arquivo[] = "Grafo da Area Central.txt";
     int NVertices, NArestas;
 
