@@ -26,6 +26,13 @@ typedef struct {
     char dificuldade[20];
 } Jogo_config;
 
+void criar_jogador(Jogador *jogador, char *nomeJogador) {
+    strcpy(jogador->nome, nomeJogador);
+    jogador->vitorias = 0;
+    jogador->derrotas = 0;
+    jogador->pontos = 0;
+}
+
 int jogadorExiste(char *nomeBusca) {
     FILE *pont_arq;
     char nome[MAX_NOME];
@@ -259,6 +266,16 @@ int main() {
     switch (opcao) {
     case 1:
         system("cls");
+        char nome_player[30];
+        printf("Digite seu nome: ");
+        fgets(nome_player, sizeof(nome_player), stdin);
+
+        if(jogadorExiste(nome_player)){
+            //Chama o jogo
+        }else {
+            Jogador criacao;
+            criar_jogador(&criacao, "Jogador1");
+        }
         while (a != 27 || a != 13){
         if(kbhit){a=getch();}
         if(a == 27){
